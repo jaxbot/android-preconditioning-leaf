@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="me.jaxbot.wear.preconditioningleaf"
+    android:versionCode="2"
+    android:versionName="1.1.0" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="me.jaxbot.wear.preconditioningleaf.MyActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="com.google.android.gms.actions.SEARCH_ACTION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name="me.jaxbot.wear.preconditioningleaf.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
+        <receiver
+            android:name="me.jaxbot.wear.preconditioningleaf.AlarmReceiverAC"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
+        <receiver android:name="me.jaxbot.wear.preconditioningleaf.StartAC" />
+
+        <service
+            android:name="me.jaxbot.wear.preconditioningleaf.UpdateCarwingsService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <receiver
+            android:name="me.jaxbot.wear.preconditioningleaf.BootReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="me.jaxbot.wear.preconditioningleaf.LoginActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="me.jaxbot.wear.preconditioningleaf.Settings"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name="me.jaxbot.wear.preconditioningleaf.SearchActivity"
+            android:label="@string/title_activity_search" >
+        </activity>
+
+        <receiver
+            android:name="me.jaxbot.wear.preconditioningleaf.NotifyReceiver"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
+
+        <service
+            android:name="me.jaxbot.wear.preconditioningleaf.StartACService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+    </application>
+
+</manifest>
