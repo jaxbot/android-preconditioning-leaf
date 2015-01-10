@@ -22,7 +22,8 @@ public class CalendarSchedule {
             CalendarContract.Instances.TITLE,     // 2
             CalendarContract.Instances.END,       // 3
             CalendarContract.Instances.ALL_DAY,   // 4
-            CalendarContract.Events.EVENT_LOCATION // 5
+            CalendarContract.Events.EVENT_LOCATION, // 5
+            CalendarContract.Events.DESCRIPTION // 6
     };
 
     // The indices for the projection array above.
@@ -30,19 +31,20 @@ public class CalendarSchedule {
     private static final int PROJECTION_END_INDEX = 3;
     private static final int PROJECTION_TITLE_INDEX = 2;
     private static final int PROJECTION_ALL_DAY = 4;
+    private static final int PROJECTION_DESCRIPTION = 6;
 
     public static ArrayList<Long> getStartEndTimes(Context ctx) {
         ArrayList<Long> timesList = new ArrayList<Long>();
 
         // Get current day schedule, 12:00 am to 11:59 pm
         Calendar beginTime = Calendar.getInstance();
-        beginTime.setTimeInMillis(System.currentTimeMillis() - 86400 * 2 * 1000);
+        beginTime.setTimeInMillis(System.currentTimeMillis() + 86400 * 3 * 1000);
         beginTime.set(Calendar.HOUR_OF_DAY, 0);
         beginTime.set(Calendar.MINUTE, 0);
         long startMillis = beginTime.getTimeInMillis();
 
         Calendar endTime = Calendar.getInstance();
-        endTime.setTimeInMillis(System.currentTimeMillis() - 86400 * 2 * 1000);
+        endTime.setTimeInMillis(System.currentTimeMillis() + 86400 * 3 * 1000);
         endTime.set(Calendar.HOUR_OF_DAY, 23);
         endTime.set(Calendar.MINUTE, 59);
         long endMillis = endTime.getTimeInMillis();
@@ -65,7 +67,7 @@ public class CalendarSchedule {
                 INSTANCE_PROJECTION,
                 selection,
                 selectionArgs,
-                CalendarContract.Events.DTSTART);
+                CalendarContract.Instances.DTSTART + " ASC");
 
         long end = 0;
 
@@ -76,17 +78,19 @@ public class CalendarSchedule {
             long beginVal;
             long endVal;
             long allDay;
+            String description;
 
             // Get the field values
             beginVal = cur.getLong(PROJECTION_BEGIN_INDEX);
             endVal = cur.getLong(PROJECTION_END_INDEX);
             allDay = cur.getLong(PROJECTION_ALL_DAY);
+            description = cur.getString(PROJECTION_DESCRIPTION);
 
             // We can't figure out when to start AC on an all-day event
             if (allDay == 1)
                 continue;
 
-            if (beginVal > previousEnd + GAP) {
+            if (beginVal > previousEnd + GAP || description.contains("#startac")) {
                 timesList.add(beginVal - GAP);
                 if (previousEnd != 0)
                     timesList.add(previousEnd);
@@ -99,6 +103,7 @@ public class CalendarSchedule {
                 end = endVal;
 
             System.out.println(cur.getString(PROJECTION_TITLE_INDEX) + " start " + longToDate(beginVal) + " end " + longToDate(endVal) + " allday: " + cur.getInt(PROJECTION_ALL_DAY));
+            System.out.println(description);
         }
         System.out.println("End is: " + longToDate(end));
         timesList.add(end);
