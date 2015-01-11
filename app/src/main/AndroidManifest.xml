@@ -29,22 +29,10 @@
         </activity>
 
         <receiver
-            android:name="me.jaxbot.wear.preconditioningleaf.AlarmReceiver"
-            android:enabled="true"
-            android:exported="true" >
-        </receiver>
-        <receiver
             android:name="me.jaxbot.wear.preconditioningleaf.AlarmReceiverAC"
             android:enabled="true"
             android:exported="true" >
         </receiver>
-        <receiver android:name="me.jaxbot.wear.preconditioningleaf.StartAC" />
-
-        <service
-            android:name="me.jaxbot.wear.preconditioningleaf.UpdateCarwingsService"
-            android:enabled="true"
-            android:exported="true" >
-        </service>
 
         <receiver
             android:name="me.jaxbot.wear.preconditioningleaf.BootReceiver"
@@ -63,16 +51,6 @@
             android:name="me.jaxbot.wear.preconditioningleaf.Settings"
             android:label="@string/title_activity_settings" >
         </activity>
-        <activity
-            android:name="me.jaxbot.wear.preconditioningleaf.SearchActivity"
-            android:label="@string/title_activity_search" >
-        </activity>
-
-        <receiver
-            android:name="me.jaxbot.wear.preconditioningleaf.NotifyReceiver"
-            android:enabled="true"
-            android:exported="true" >
-        </receiver>
 
         <service
             android:name="me.jaxbot.wear.preconditioningleaf.StartACService"
