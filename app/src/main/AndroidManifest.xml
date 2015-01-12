@@ -33,6 +33,11 @@
             android:enabled="true"
             android:exported="true" >
         </receiver>
+        <receiver
+            android:name="me.jaxbot.wear.preconditioningleaf.AlarmReceiverSetAlarm"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
 
         <receiver
             android:name="me.jaxbot.wear.preconditioningleaf.BootReceiver"

@@ -11,6 +11,7 @@ public class BootReceiver extends BroadcastReceiver {
     // Set the alarm again once the phone boots up
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO: Reset ALL alarms
+        // Reset all the alarms from this point on
+        AlarmSetterAC.setAlarmsForToday(context);
     }
 }

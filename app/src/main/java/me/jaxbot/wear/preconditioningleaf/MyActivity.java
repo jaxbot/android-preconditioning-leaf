@@ -35,14 +35,8 @@ public class MyActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ArrayList<ScheduledStart> events = CalendarSchedule.getStartEndTimes(this);
-        String timesStr = "";
-        for (ScheduledStart event : events) {
-            timesStr += event.name + ": " + CalendarSchedule.longToDate(event.time) + "\n";
-            AlarmSetterAC.setAlarm(this, event.time, event.name);
-        }
-        System.out.println(timesStr);
-
+        AlarmSetterAC.setAlarmsForToday(this);
+        AlarmSetterAC.setAlarmSetterAlarm(this);
     }
 
     void showToast(String text)
