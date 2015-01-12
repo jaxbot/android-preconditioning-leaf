@@ -35,14 +35,14 @@ public class MyActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ArrayList<Long> times = CalendarSchedule.getStartEndTimes(this);
+        ArrayList<ScheduledStart> events = CalendarSchedule.getStartEndTimes(this);
         String timesStr = "";
-        for (Long time : times) {
-            timesStr += CalendarSchedule.longToDate(time) + "\n";
+        for (ScheduledStart event : events) {
+            timesStr += event.name + ": " + CalendarSchedule.longToDate(event.time) + "\n";
+            AlarmSetterAC.setAlarm(this, event.time, event.name);
         }
         System.out.println(timesStr);
 
-        AlarmSetterAC.setAlarm(this, System.currentTimeMillis() + 1000 * 15, "Something dumb");
     }
 
     void showToast(String text)

@@ -33,18 +33,18 @@ public class CalendarSchedule {
     private static final int PROJECTION_ALL_DAY = 4;
     private static final int PROJECTION_DESCRIPTION = 6;
 
-    public static ArrayList<Long> getStartEndTimes(Context ctx) {
-        ArrayList<Long> timesList = new ArrayList<Long>();
+    public static ArrayList<ScheduledStart> getStartEndTimes(Context ctx) {
+        ArrayList<ScheduledStart> timesList = new ArrayList<ScheduledStart>();
 
         // Get current day schedule, 12:00 am to 11:59 pm
         Calendar beginTime = Calendar.getInstance();
-        beginTime.setTimeInMillis(System.currentTimeMillis() + 86400 * 3 * 1000);
+        beginTime.setTimeInMillis(System.currentTimeMillis());
         beginTime.set(Calendar.HOUR_OF_DAY, 0);
         beginTime.set(Calendar.MINUTE, 0);
         long startMillis = beginTime.getTimeInMillis();
 
         Calendar endTime = Calendar.getInstance();
-        endTime.setTimeInMillis(System.currentTimeMillis() + 86400 * 3 * 1000);
+        endTime.setTimeInMillis(System.currentTimeMillis());
         endTime.set(Calendar.HOUR_OF_DAY, 23);
         endTime.set(Calendar.MINUTE, 59);
         long endMillis = endTime.getTimeInMillis();
@@ -70,7 +70,9 @@ public class CalendarSchedule {
                 CalendarContract.Instances.DTSTART + " ASC");
 
         long end = 0;
+        String endName = "";
 
+        String previousName = "";
         long previousEnd = 0;
         long GAP = 1860 * 1000; // 31 minutes
 
@@ -79,24 +81,27 @@ public class CalendarSchedule {
             long endVal;
             long allDay;
             String description;
+            String name;
 
             // Get the field values
             beginVal = cur.getLong(PROJECTION_BEGIN_INDEX);
             endVal = cur.getLong(PROJECTION_END_INDEX);
             allDay = cur.getLong(PROJECTION_ALL_DAY);
             description = cur.getString(PROJECTION_DESCRIPTION);
+            name = cur.getString(PROJECTION_TITLE_INDEX);
 
             // We can't figure out when to start AC on an all-day event
             if (allDay == 1)
                 continue;
 
             if (beginVal > previousEnd + GAP || description.contains("#startac")) {
-                timesList.add(beginVal - GAP);
+                timesList.add(new ScheduledStart(name, 0, beginVal - GAP));
                 if (previousEnd != 0)
-                    timesList.add(previousEnd);
+                    timesList.add(new ScheduledStart(previousName, 0, previousEnd));
             }
 
             previousEnd = endVal;
+            previousName = name;
 
             // Get the final end time, since no event will be there to follow
             if (endVal > end)
@@ -106,7 +111,8 @@ public class CalendarSchedule {
             System.out.println(description);
         }
         System.out.println("End is: " + longToDate(end));
-        timesList.add(end);
+        if (end != 0)
+            timesList.add(new ScheduledStart(endName, 0, end));
 
         return timesList;
     }
