@@ -1,32 +1,13 @@
 package me.jaxbot.wear.preconditioningleaf;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.SearchManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.SeekBar;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 public class MyActivity extends ActionBarActivity {
     final Context that = this;

@@ -6,9 +6,11 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
 public class AlarmReceiverAC extends WakefulBroadcastReceiver {
+    private static final String TAG = "AlarmReceiverAC";
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("A", "Alaalalala");
+        Log.i(TAG, "Received intent, starting StartACService");
 
         Intent service = new Intent(context, StartACService.class);
         service.putExtra("eventName", intent.getStringExtra("eventName"));

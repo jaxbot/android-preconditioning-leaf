@@ -2,8 +2,8 @@ package me.jaxbot.wear.preconditioningleaf;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.text.format.Time;
+import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
  * Created by jonathan on 9/21/14.
  */
 public class Carwings {
+    private static final String TAG = "Carwings";
 
     public static String[] PortalURL = {
         "https://www.nissanusa.com/owners/", // US
@@ -40,16 +41,11 @@ public class Carwings {
 
     public int currentBattery;
     public String range;
-    public String chargeTime;
     public boolean currentHvac;
     public String lastUpdateTime;
     public String chargerType;
     public boolean charging;
-    public boolean autoUpdate;
-    public boolean showPermanent;
     public boolean useMetric;
-    public boolean noNightUpdates;
-    public boolean notifyOnlyWhenCharging;
 
     // Endpoint url for this instance
     String url;
@@ -65,17 +61,11 @@ public class Carwings {
         this.username = settings.getString("username", "");
         this.password = settings.getString("password", "");
         this.currentBattery = settings.getInt("currentBattery", 0);
-        this.chargeTime = settings.getString("chargeTime", "");
         this.range = settings.getString("range", "");
         this.lastUpdateTime = settings.getString("lastupdate", "");
         this.url = PortalURL[settings.getInt("portal", 0)];
         this.chargerType = settings.getString("chargerType", "L1");
         this.charging = settings.getBoolean("charging", false);
-        this.autoUpdate = settings.getBoolean("autoupdate", true);
-        this.showPermanent = settings.getBoolean("showPermanent", false);
-        this.useMetric = settings.getBoolean("useMetric", false);
-        this.noNightUpdates = settings.getBoolean("noNightUpdates", true);
-        this.notifyOnlyWhenCharging = settings.getBoolean("notifyOnlyWhenCharging", false);
     }
     private CookieStore login() {
         DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -130,7 +120,7 @@ public class Carwings {
 
             return cachedCarID;
         } else {
-            Log.e("Leaf", "Failed to find vehicle id");
+            Log.e(TAG, "Failed to find vehicle id");
             return "";
         }
     }
@@ -151,34 +141,6 @@ public class Carwings {
             JSONObject jObject = new JSONObject(result);
             this.currentBattery = jObject.getInt("currentBattery");
 
-            String l1Time = jObject.getString("chargeTime");
-            String l2Time = jObject.getString("chargeTime220");
-            String l3Time = jObject.getString("chrgDrtn22066Tx");
-
-            // When the car is charging, only one of the ltimes will be populated
-            // with a value other than null. Fall through if null, or use default
-            // time if available
-            this.chargeTime = l1Time;
-            this.chargerType = "L1";
-
-            int defaultCharger = settings.getInt("defaultChargeLevel", 0);
-            Log.d("HI", "def: " + defaultCharger);
-
-            if (chargeTime.equals("null") || (!l2Time.equals("null") && defaultCharger == 1)) {
-                this.chargeTime = l2Time;
-                this.chargerType = "L2";
-            }
-
-            if (chargeTime.equals("null") || (!l3Time.equals("null") && defaultCharger == 2)) {
-                this.chargeTime = l3Time;
-                this.chargerType = "L2+";
-            }
-
-            if (chargeTime.equals("null")) {
-                this.chargeTime = "Unknown";
-                this.chargerType = "?";
-            }
-
             this.currentHvac = jObject.getBoolean("currentHvac");
             this.charging = !jObject.getString("currentCharging").equals("NOT_CHARGING");
 
@@ -194,7 +156,6 @@ public class Carwings {
 
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("range", this.range);
-            editor.putString("chargeTime", this.chargeTime);
             editor.putBoolean("charging", this.charging);
             editor.putString("chargerType", this.chargerType);
             editor.putString("lastupdate", this.lastUpdateTime);
@@ -247,5 +208,4 @@ public class Carwings {
 
         return "";
     }
-
 }
