@@ -22,6 +22,10 @@ public class StartACService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "Started service.");
 
+        // Start_Sticky command, or other action without intent
+        if (intent == null)
+            return super.onStartCommand(intent, flags, startId);
+
         String eventName;
         eventName = intent.getStringExtra("eventName");
 
@@ -33,6 +37,7 @@ public class StartACService extends Service {
         NotificationManager mNotificationManager = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);
         mNotificationManager.notify(2, mBuilder.build());
+
         return super.onStartCommand(intent, flags, startId);
     }
 }
