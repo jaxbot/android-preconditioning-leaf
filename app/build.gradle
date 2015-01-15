@@ -5,11 +5,11 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "me.jaxbot.wear.leafstatus"
+        applicationId "me.jaxbot.wear.preconditioningleaf"
         minSdkVersion 19
         targetSdkVersion 20
-        versionCode 10
-        versionName "1.8.0"
+        versionCode 1
+        versionName "1.0.0"
     }
     buildTypes {
         release {
