@@ -50,7 +50,7 @@ public class AlarmSetterAC {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis() + 86400 * 1000);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.MINUTE, 4);
 
         Intent intent = new Intent(context, AlarmReceiverSetAlarm.class);
         PendingIntent sender = PendingIntent.getBroadcast(context, REQUEST_SET_ALARMS, intent, 0);

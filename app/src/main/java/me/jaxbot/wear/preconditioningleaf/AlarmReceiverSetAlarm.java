@@ -12,5 +12,6 @@ public class AlarmReceiverSetAlarm extends WakefulBroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.i(TAG, "Wakeful broadcast received.");
         AlarmSetterAC.setAlarmsForToday(context);
+        AlarmSetterAC.setAlarmSetterAlarm(context);
     }
 }
