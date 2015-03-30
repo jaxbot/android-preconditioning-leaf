@@ -7,17 +7,30 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class MyActivity extends ActionBarActivity {
     final Context that = this;
+    WebView webview;
+    ArrayList<ScheduledStart> scheduleArray = new ArrayList<ScheduledStart>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_my);
 
         AlarmSetterAC.setAlarmsForToday(this);
         AlarmSetterAC.setAlarmSetterAlarm(this);
+
+        scheduleArray.add(new ScheduledStart("Test 1", 0, 10));
+        scheduleArray.add(new ScheduledStart("Test 2", 0, 15));
+        scheduleArray.add(new ScheduledStart("Test 3", 0, 18));
+        scheduleArray.add(new ScheduledStart("Test 4", 0, 19));
+
     }
 
     void showToast(String text)
@@ -60,6 +73,9 @@ public class MyActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        ListView listView = (ListView)(findViewById(R.id.listView));
+        listView.setAdapter(new ScheduleArrayAdapter(this,  scheduleArray));
     }
 
     @Override
