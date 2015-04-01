@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ScheduleArrayAdapter extends ArrayAdapter<ScheduledStart> {
     private final Context context;
@@ -30,6 +32,14 @@ public class ScheduleArrayAdapter extends ArrayAdapter<ScheduledStart> {
         View rowView = inflater.inflate(R.layout.schedule_row_layout, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.label);
         textView.setText(values.get(position).name);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(values.get(position).time);
+
+        TimePicker timePicker = (TimePicker) rowView.findViewById(R.id.timePicker);
+
+        timePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
+        timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
 
         return rowView;
     }
